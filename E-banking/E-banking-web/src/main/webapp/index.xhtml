@@ -16,7 +16,7 @@
 
                     <p:outputLabel for="clave" value="Clave" styleClass="textb"/>
                     <p:password id="clave" value="" required="true" requiredMessage="Ingrese Clave"/>
-                    <p:commandButton icon="ui-icon-key" value="Login" update="login"/>
+                    <p:commandButton icon="ui-icon-key" value="Login" actionListener="#{plantillaBean.redireccionar()}" update="login"/>
                     <p:commandButton icon="" value="Registrar" update="login"/>
                 </h:panelGrid>
             </ui:define>
