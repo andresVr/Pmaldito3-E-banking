@@ -14,7 +14,7 @@ html, body{
     background:#fff; 
 }
 .fondo{
-     min-height: 850px;  position: static;
+     min-height: 800px;  position: static;
      max-height: 2000px;
 }
 a {
@@ -163,7 +163,7 @@ nav ul > li.sub li.sub{
 .fondo h1 {
     font-size: 3em;
     margin: 0.3em;
-    color:#f6e9da;
+    color:#111;
     font-family: 'Squada One', cursive;
     text-align: center;
 }
@@ -172,7 +172,7 @@ nav ul > li.sub li.sub{
     display: block;
 }
 .textb{
-    color:#fff;	
+    color:#111;	
     display: block;
     font-size: 1.5em;
     margin: 0em;
@@ -219,8 +219,8 @@ span.menu {
     background-size: cover;
 }
 .banner-two {
-    background: url(../images/1.jpg)no-repeat;
-    min-height:200px;
+    background: url(../images/2.jpg)no-repeat;
+    min-height:300px;
     background-size: cover;
 }
 .banner-bottom {
@@ -247,7 +247,7 @@ span.menu {
 }
 .banner-bottom a {
     font-size: 1em;
-    color: #111;
+    color:#fff;
     padding: 0.5em 1em;
     display: block;
     border: 2px solid #FFF;
@@ -1666,7 +1666,7 @@ h3.typo1 {
         padding: 2em 0em 3em 0em;
     }
     .banner-two {
-        min-height: 200px;
+        min-height: 300px;
     }
     .services-top h2 {
         font-size: 2.5em;

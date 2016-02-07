@@ -31,6 +31,9 @@ public class PlantillaBean implements Serializable {
     public String redireccionar() {
         return "/index.xhtml";
     }
+    public String registrar() {
+        return "/registrar.xhtml";
+    }
 
     /**
      * metodo que verifica el inicio de sesión antes del acceso a las ventanas internas.

@@ -20,8 +20,8 @@ import javax.ejb.Stateless;
 @Stateless
 public class UsuarioServicio {
     
-    @EJB
-    private UsuarioDAO usuarioDAO;
+    
+    private UsuarioDAO usuarioDAO = new UsuarioDAO();
     
     public List<Usuario> obtenerTodosLosUsuarios(){
         return this.usuarioDAO.find().asList();
@@ -34,6 +34,18 @@ public class UsuarioServicio {
     public void insertarUsuario(Usuario u){
         this.usuarioDAO.save(u);
     }
-    
+
+    /**
+     *
+     * @param usuario
+     * @param password
+     * @return
+     */
+    public Usuario buscarPorUsuarioPassword(String usuario, String password) {
+        Usuario usu = new Usuario();
+        usu.setNombreUsuario(usuario);
+        usu.setClave(password);
+        return this.usuarioDAO.findOne("nombreUsuario", usu);
+    }
     
 }

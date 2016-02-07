@@ -14,14 +14,15 @@ import org.mongodb.morphia.annotations.Entity;
  * @author david
  */
 @Entity(value = "usuario")
-public class Usuario extends BaseEntity{
-    
+public class Usuario extends BaseEntity {
+
     private double montoMaximo;
     private String codigoCliente;
     private int activo;
     private String clave;
     private String nombreUsuario;
     private String correo;
+    private String numeroCuenta;
 
     public double getMontoMaximo() {
         return montoMaximo;
@@ -69,11 +70,19 @@ public class Usuario extends BaseEntity{
 
     public void setCorreo(String correo) {
         this.correo = correo;
-    }            
+    }
+
+    public String getNumeroCuenta() {
+        return numeroCuenta;
+    }
+
+    public void setNumeroCuenta(String numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
+    }
 
     @Override
     public String toString() {
-        return "Usuario{" + "montoMaximo=" + montoMaximo + ", codigoCliente=" + codigoCliente + ", activo=" + activo + ", clave=" + clave + ", nombreUsuario=" + nombreUsuario + ", correo=" + correo + '}';
-    }   
-    
+        return "Usuario{" + "montoMaximo=" + montoMaximo + ", codigoCliente=" + codigoCliente + ", activo=" + activo + ", clave=" + clave + ", nombreUsuario=" + nombreUsuario + ", correo=" + correo + ", numeroCuenta=" + numeroCuenta + '}';
+    }
+
 }
