@@ -12,6 +12,7 @@ package ec.edu.espe.distribuidas.web;
 
 import com.espe.distribuidas.eBanking.modelo.Usuario;
 import com.espe.distribuidas.eBanking.servicio.UsuarioServicio;
+import com.espe.distribuidas.servicio.CuentaServicio;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -36,6 +37,9 @@ public class UsuarioBean extends BaseBean implements Serializable {
 
     @EJB
     private UsuarioServicio usuarioServicio;
+
+    @EJB
+    private CuentaServicio cuentaServicio;
 
     /**
      * variable tipo lista de usuarios para setar a una tabla del formulario.
@@ -74,6 +78,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
     @PostConstruct
     public void inicializar() {
         this.usuarios = this.usuarioServicio.obtenerTodosLosUsuarios();
+        this.usuario = new Usuario();
     }
 
     /**
@@ -152,16 +157,26 @@ public class UsuarioBean extends BaseBean implements Serializable {
     public void aceptar() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        try {
-            Usuario usuario = (Usuario) ((HttpServletRequest) context.getExternalContext().getRequest()).getSession().getAttribute("usuario");
-            this.usuarioServicio.insertarUsuario(this.usuario);
-            this.usuarios.add(0, this.usuario);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se registro el cliente: " + this.usuario.getNombreUsuario() + " " + this.usuario.getCorreo(), null));
-        } catch (Exception e) {
+        if (this.cuentaServicio.validarUsuario(this.usuario.getCodigoCliente()) == true) {
+            if (this.cuentaServicio.relacionClienteCuenta(this.usuario.getCodigoCliente(), this.usuario.getNumeroCuenta()) == true) {
+                try {
+                    Usuario usuario = (Usuario) ((HttpServletRequest) context.getExternalContext().getRequest()).getSession().getAttribute("usuario");
+                    this.usuario.setActivo(1);
+                    this.usuario.setMontoMaximo(300);
+                    this.usuarioServicio.insertarUsuario(this.usuario);
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se registro el cliente: " + this.usuario.getNombreUsuario() + " " + this.usuario.getCorreo(), null));
+                } catch (Exception e) {
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                }
+            } else {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error no existe relacion cliente-cuenta", null));
+                this.usuario=null;
+            }
+        } else {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error en el registro-usuario no existe", null));
+            this.usuario=null;
         }
-
     }
 
     /**
