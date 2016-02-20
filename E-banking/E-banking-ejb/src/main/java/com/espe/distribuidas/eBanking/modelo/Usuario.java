@@ -53,7 +53,9 @@ public class Usuario extends BaseEntity {
     }
 
     public void setClave(String clave) {
-        this.clave = DigestUtils.md5Hex(clave);
+       // System.err.println("clave real:"+clave);
+        //this.clave = DigestUtils.md5Hex(clave);
+       this.clave=clave;
     }
 
     public String getNombreUsuario() {

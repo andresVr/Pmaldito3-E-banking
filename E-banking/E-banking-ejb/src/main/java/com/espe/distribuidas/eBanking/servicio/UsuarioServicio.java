@@ -7,10 +7,11 @@ package com.espe.distribuidas.eBanking.servicio;
 
 import com.espe.distribuidas.eBanking.dao.UsuarioDAO;
 import com.espe.distribuidas.eBanking.modelo.Usuario;
+import com.espe.distribuidas.eBanking.persistence.PersistenceManager;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import org.mongodb.morphia.query.Query;
 
 /**
  *
@@ -19,19 +20,20 @@ import javax.ejb.Stateless;
 @LocalBean
 @Stateless
 public class UsuarioServicio {
-    
-    
+
+    private PersistenceManager manger = new PersistenceManager();
+
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
-    
-    public List<Usuario> obtenerTodosLosUsuarios(){
+
+    public List<Usuario> obtenerTodosLosUsuarios() {
         return this.usuarioDAO.find().asList();
     }
-    
-    public Usuario obtenerUsuarioPorNombreUsuario(String nu){
+
+    public Usuario obtenerUsuarioPorNombreUsuario(String nu) {
         return this.usuarioDAO.findOne("nombreUsuario", nu);
     }
-    
-    public void insertarUsuario(Usuario u){
+
+    public void insertarUsuario(Usuario u) {
         this.usuarioDAO.save(u);
     }
 
@@ -45,7 +47,8 @@ public class UsuarioServicio {
         Usuario usu = new Usuario();
         usu.setNombreUsuario(usuario);
         usu.setClave(password);
-        return this.usuarioDAO.findOne("nombreUsuario", usu);
+        Query q =this.manger.context().createQuery(Usuario.class).filter("nombreUsuario", usu.getNombreUsuario()).filter("clave", usu.getClave());
+        return (Usuario) this.usuarioDAO.find(q).get();
     }
-    
+
 }

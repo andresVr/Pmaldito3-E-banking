@@ -10,6 +10,8 @@
  */
 package ec.edu.espe.distribuidas.web;
 
+import com.espe.distribuidas.eBanking.modelo.Usuario;
+import com.espe.distribuidas.model.Empleado;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
@@ -42,10 +44,10 @@ public class PlantillaBean implements Serializable {
     public void verificarSesion() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
-          //  Empleado empleado = (Empleado) context.getExternalContext().getSessionMap().get("usuario");
-           // if (empleado == null) {
+            Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
+            if (usuario == null) {
                 context.getExternalContext().redirect("./../permisos.xhtml");
-            //}
+            }
         } catch (Exception e) {
         }
     }

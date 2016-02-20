@@ -13,9 +13,13 @@ package ec.edu.espe.distribuidas.web;
 import com.espe.distribuidas.eBanking.modelo.Usuario;
 import com.espe.distribuidas.eBanking.servicio.UsuarioServicio;
 import com.espe.distribuidas.servicio.CuentaServicio;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -71,13 +75,14 @@ public class UsuarioBean extends BaseBean implements Serializable {
      */
     private Boolean disabledCampoModificar = false;
 
+    private String clave;
     /**
      * metodo que se inicializa despues de cargar el formulario contiene la
      * anotacion postconstructor.
      */
     @PostConstruct
     public void inicializar() {
-        this.usuarios = this.usuarioServicio.obtenerTodosLosUsuarios();
+
         this.usuario = new Usuario();
     }
 
@@ -160,25 +165,39 @@ public class UsuarioBean extends BaseBean implements Serializable {
         if (this.cuentaServicio.validarUsuario(this.usuario.getCodigoCliente()) == true) {
             if (this.cuentaServicio.relacionClienteCuenta(this.usuario.getCodigoCliente(), this.usuario.getNumeroCuenta()) == true) {
                 try {
-                    Usuario usuario = (Usuario) ((HttpServletRequest) context.getExternalContext().getRequest()).getSession().getAttribute("usuario");
+
                     this.usuario.setActivo(1);
                     this.usuario.setMontoMaximo(300);
+                    this.setClave(this.generarClave());
+                    this.usuario.setClave(this.getClave());
+                    System.out.println("clave:"+this.getClave());
                     this.usuarioServicio.insertarUsuario(this.usuario);
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se registro el cliente: " + this.usuario.getNombreUsuario() + " " + this.usuario.getCorreo(), null));
+                    this.redireccionar();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Revisar el correo: " + this.usuario.getCorreo()+" para completar el registro", null));
                 } catch (Exception e) {
 
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
                 }
             } else {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error no existe relacion cliente-cuenta", null));
-                this.usuario=null;
             }
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error en el registro-usuario no existe", null));
-            this.usuario=null;
         }
     }
-
+        public void redireccionar() {
+            FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            context.getExternalContext().redirect("./index.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    
+public String generarClave(){
+    return new Random(999999).toString();
+}
+    
     /**
      * metodo que controla el boton aceptar del formulario. se comporta de 2
      * maneras, para la primera guarda un nuevo registro en la base de datos.
@@ -307,6 +326,14 @@ public class UsuarioBean extends BaseBean implements Serializable {
      */
     public void setDisabledCampoModificar(Boolean disabledCampoModificar) {
         this.disabledCampoModificar = disabledCampoModificar;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
 }

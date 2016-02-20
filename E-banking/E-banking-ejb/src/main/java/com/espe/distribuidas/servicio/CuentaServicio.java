@@ -101,11 +101,16 @@ public class CuentaServicio {
 //        return cuentatmp.getClienteCuenta().getCedula().equals(cedula);
           Boolean verificar=false; 
           Cliente clientmp=new Cliente();
+          clientmp.setCedula(cedula);
           Cliente cliente=clienteDAO.find(clientmp).get(0);
+          System.out.println("cliente"+cliente);
           List<Cuenta> cuentas=cliente.getCuentaCliente();
           for(int i=0;i<cuentas.size();i++)
           {
+              System.out.println("cuentas"+cuentas.get(i).getNumeroCuenta());
+              System.out.println("pae"+cuenta);
               if(cuentas.get(i).getNumeroCuenta().equals(cuenta)){
+                  System.out.println("Parametro"+cuenta);
               verificar=true;
               }
           }

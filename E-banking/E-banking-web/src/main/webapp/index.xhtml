@@ -12,11 +12,11 @@
                 <p:growl id="mensaje" autoUpdate="true" showSummary="true" showDetail="true"/>
                 <h:panelGrid id="login" columns="6">
                     <p:outputLabel for="usuario" value="Usuario" styleClass="textb"/>
-                    <p:inputText id="usuario" value="" required="true" requiredMessage="Ingrese usuario"/>
+                    <p:inputText id="usuario" value="#{loginBean.usuario.nombreUsuario}" required="true" requiredMessage="Ingrese usuario"/>
 
                     <p:outputLabel for="clave" value="Clave" styleClass="textb"/>
-                    <p:password id="clave" value="" required="true" requiredMessage="Ingrese Clave"/>
-                    <p:commandButton icon="ui-icon-key" value="Login" action="#{plantillaBean.redireccionar()}" update="login"/>
+                    <p:password id="clave" value="#{loginBean.usuario.clave}" required="true" requiredMessage="Ingrese Clave"/>
+                    <p:commandButton icon="ui-icon-key" value="Login" action="#{loginBean.iniciarSesion()}" update="login"/>
                 </h:panelGrid>
             </ui:define>
         </ui:composition>

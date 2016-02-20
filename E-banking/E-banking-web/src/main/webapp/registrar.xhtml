@@ -19,7 +19,7 @@
                         </p:inputText> 
                         <p:message for="txtCedula"/>
                         <p:outputLabel for="txtCuenta" value="Cuenta: " />
-                        <p:inputText id="txtCuenta" value="#{usuarioBean.usuario.correo}" required="true" requiredMessage="Campo Requerido" validatorMessage="No se permiten caracteres Especiales">
+                        <p:inputText id="txtCuenta" value="#{usuarioBean.usuario.numeroCuenta}" required="true" requiredMessage="Campo Requerido" validatorMessage="No se permiten caracteres Especiales">
                             <f:validateLength minimum="3" maximum="30" />
                         </p:inputText> 
                         <p:message for="txtCuenta"/>
@@ -33,11 +33,7 @@
                             <f:validateLength minimum="3" maximum="30" />
                         </p:inputText>
                         <p:message for="txtUsuario"/>
-                        <p:outputLabel for="txtClave" value="Constraseña: "/>
-                        <p:password id="txtClave" value="#{usuarioBean.usuario.clave}" required="true" requiredMessage="Campo Requerido" validatorMessage="Ingrese teléfono mínimo 8 y máximo de 15 números">
-                            <f:validateLength minimum="8" maximum="15" />
-                        </p:password>
-                        <p:message for="txtClave"/>
+
                         <p:commandButton value="Ingresar" actionListener="#{usuarioBean.aceptar()}"  update="@form"/>
                         <p:commandButton value="Canelar" actionListener="#{usuarioBean.cancelar()}" immediate="true" update="@form"/>
                     </h:panelGrid>

@@ -10,12 +10,15 @@
  */
 package ec.edu.espe.distribuidas.web;
 
+import com.espe.distribuidas.eBanking.modelo.Sesion;
 import com.espe.distribuidas.eBanking.modelo.Usuario;
+import com.espe.distribuidas.eBanking.persistence.PersistenceManager;
+import com.espe.distribuidas.eBanking.servicio.SesionServicio;
 import com.espe.distribuidas.eBanking.servicio.UsuarioServicio;
 import java.io.Serializable;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -33,10 +36,14 @@ public class LoginBean implements Serializable {
     @EJB
     private UsuarioServicio usuarioServicio;
 
+    @EJB
+    private SesionServicio sesionServicio;
     /**
      * variable de tipo usuario.
      */
     private Usuario usuario;
+
+    PersistenceManager manger = new PersistenceManager();
 
     /**
      * metodo que se inicializa despues de cargar el formulario contiene la
@@ -56,12 +63,15 @@ public class LoginBean implements Serializable {
     public String iniciarSesion() {
         Usuario usuariotmp;
         String redireccion = null;
+        Sesion sesion=new Sesion();
         try {
             usuariotmp = usuarioServicio.buscarPorUsuarioPassword(usuario.getNombreUsuario(), usuario.getClave());
             if (usuariotmp != null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Bienvenido"));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
                 redireccion = "/views/dashboard?faces-redirect=true";
+                sesion.setIdCliente(usuariotmp.getCodigoCliente());
+                sesion.setFechaSesion(new Date());
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Credenciales Incorrectas"));
 

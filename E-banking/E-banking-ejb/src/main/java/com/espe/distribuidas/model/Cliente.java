@@ -113,8 +113,9 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "Cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", correoElectronico=" + correoElectronico + ", cuentaCliente=" + cuentaCliente + '}';
+        return "Cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", correoElectronico=" + correoElectronico + cuentaCliente.get(0).getNumeroCuenta() + '}';
     }
+
 
 
 }
