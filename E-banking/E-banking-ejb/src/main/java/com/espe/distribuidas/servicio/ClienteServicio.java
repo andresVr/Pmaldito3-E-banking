@@ -5,7 +5,6 @@
  */
 package com.espe.distribuidas.servicio;
 
-import com.espe.distribuidas.commons.dao.facade.ClienteServicioRemote;
 import com.espe.distribuidas.dao.ClienteDAO;
 import com.espe.distribuidas.model.Cliente;
 import com.espe.distribuidas.model.Cuenta;
@@ -20,28 +19,9 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class ClienteServicio implements ClienteServicioRemote{
+public class ClienteServicio {
 
     @EJB
     ClienteDAO clienteDAO;
 
-    @Override
-    public List<Cuenta> obterCuentasCliente(Cliente cliente) {
-        Cliente clientetmp = cliente;
-        return clienteDAO.find(clientetmp).get(0).getCuentaCliente();
-    }
-    
-    @Override
-    public Cliente obtenerClienteId(Cliente cliente){
-        return clienteDAO.findById(cliente.getCedula(), true);
-    
-    }
-    
-    @Override
-        public List<Cliente> obtenerTodosClientes(){
-        return clienteDAO.findAll();
-    
-    }
-        
-        
 }
