@@ -72,6 +72,7 @@ public class LoginBean implements Serializable {
                 redireccion = "/views/dashboard?faces-redirect=true";
                 sesion.setIdCliente(usuariotmp.getCodigoCliente());
                 sesion.setFechaSesion(new Date());
+                this.sesionServicio.insertar(sesion);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Credenciales Incorrectas"));
 

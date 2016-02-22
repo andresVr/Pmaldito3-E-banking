@@ -23,5 +23,9 @@ public class ClienteServicio {
 
     @EJB
     ClienteDAO clienteDAO;
+    
+    public Cliente obtenerclientePorId(String idCliente){
+    return clienteDAO.findById(idCliente, true);
+    }
 
 }

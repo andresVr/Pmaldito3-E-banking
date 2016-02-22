@@ -11,15 +11,18 @@
             <ui:define name="lista">
 
                 <label>Telefono</label>
-                <input id="textTelefono" type="text"></input>
-
+                <p:inputText id="textTelefono" value="#{telefoniaBean.telefonia.telefono}"></p:inputText>
                 <label>Valor</label>
-                <input id="textValor" type="text"></input>
+                <p:inputText id="textValor"></p:inputText>
+                <p:inputText id="valorq" value="#{telefoniaBean.respuesta}"></p:inputText>
+                <!--<h:commandButton id="valor"  action="valor" type="submit" onclick="sendMessage()" /> -->
+                <p:commandButton id="valor"   actionListener="#{telefoniaBean.ejecutar()}" ajax="false" type="submit" onclick="sendMessage()" ></p:commandButton>
+                <!--<input type="button" onclick="sendMessage();"  value="Recargar"></input>-->
 
-                <input type="button" onclick="sendMessage();"  value="Recargar"></input>
 
+                <p:inputTextarea  id="menssagesTextArea">
 
-
+                </p:inputTextarea>
                 <br/>
                 <textarea id="menssagesTextArea" rows="10" cols="50"> </textarea>
             </ui:define>

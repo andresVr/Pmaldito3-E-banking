@@ -36,10 +36,18 @@ public class CuentaServicio {
     @EJB
     MovimientoDAO movimientoDAO;
 
+    @EJB
+    MovimientoServicio movimientoServicio;
 
-    public Cliente obtenerCuentaClienteParte1(String cuenta) {
+    public String obtenerCuentaClienteParte1(String cuenta) {
         Cuenta cuentatmp = new Cuenta(cuenta);
-        return cuentaDAO.find(cuentatmp).get(0).getClienteCuenta();
+        Cuenta cuentaCliente = cuentaDAO.find(cuentatmp).get(0);
+        Cliente cliente = cuentaDAO.find(cuentatmp).get(0).getClienteCuenta();
+        if (cliente != null && cuentaCliente != null) {
+            return "OK_" + cliente.getNombre() + "_" + cuentaCliente.getTipo() + "_" + cuentaCliente.getSaldo();
+        } else {
+        }
+        return "NO";
     }
 
     public Cuenta obtenerCuentaClienteParte2(String cuenta) {
@@ -67,6 +75,7 @@ public class CuentaServicio {
             movimientotmp.setMovimientoCuenta(cuentatmp);
             movimientotmp.setSaldo(calcularNuevoSaldo(0, cuentatmp.getSaldo(), new BigDecimal(valorDeposito)));
             movimientotmp.setTipoMovimiento("DP");
+            this.movimientoServicio.insertarMovimiento(movimientotmp);
             return "00" + "_" + calcularNuevoSaldo(0, cuentatmp.getSaldo(), new BigDecimal(valorDeposito));
         } else {
             return "01";
@@ -85,6 +94,7 @@ public class CuentaServicio {
             movimientotmp.setMovimientoCuenta(cuentatmp);
             movimientotmp.setSaldo(calcularNuevoSaldo(1, cuentatmp.getSaldo(), new BigDecimal(valorRetiro)));
             movimientotmp.setTipoMovimiento("RP");
+            this.movimientoServicio.insertarMovimiento(movimientotmp);
             return "00" + "_" + calcularNuevoSaldo(0, cuentatmp.getSaldo(), new BigDecimal(valorRetiro));
         } else {
             return "01";
@@ -99,22 +109,21 @@ public class CuentaServicio {
 //        busqueda.setNumeroCuenta(cuenta);
 //        Cuenta cuentatmp = this.cuentaDAO.find(busqueda).get(0);
 //        return cuentatmp.getClienteCuenta().getCedula().equals(cedula);
-          Boolean verificar=false; 
-          Cliente clientmp=new Cliente();
-          clientmp.setCedula(cedula);
-          Cliente cliente=clienteDAO.find(clientmp).get(0);
-          System.out.println("cliente"+cliente);
-          List<Cuenta> cuentas=cliente.getCuentaCliente();
-          for(int i=0;i<cuentas.size();i++)
-          {
-              System.out.println("cuentas"+cuentas.get(i).getNumeroCuenta());
-              System.out.println("pae"+cuenta);
-              if(cuentas.get(i).getNumeroCuenta().equals(cuenta)){
-                  System.out.println("Parametro"+cuenta);
-              verificar=true;
-              }
-          }
-          return verificar;
+        Boolean verificar = false;
+        Cliente clientmp = new Cliente();
+        clientmp.setCedula(cedula);
+        Cliente cliente = clienteDAO.find(clientmp).get(0);
+        System.out.println("cliente" + cliente);
+        List<Cuenta> cuentas = cliente.getCuentaCliente();
+        for (int i = 0; i < cuentas.size(); i++) {
+            System.out.println("cuentas" + cuentas.get(i).getNumeroCuenta());
+            System.out.println("pae" + cuenta);
+            if (cuentas.get(i).getNumeroCuenta().equals(cuenta)) {
+                System.out.println("Parametro" + cuenta);
+                verificar = true;
+            }
+        }
+        return verificar;
     }
 
     public BigDecimal saldoCuenta(String numeroCuenta) {
@@ -125,7 +134,7 @@ public class CuentaServicio {
     }
 
     public Boolean validarUsuario(String cedula) {
-        Cliente clientetmp=new Cliente();
+        Cliente clientetmp = new Cliente();
         clientetmp.setCedula(cedula);
         return !this.clienteDAO.find(clientetmp).isEmpty();
     }

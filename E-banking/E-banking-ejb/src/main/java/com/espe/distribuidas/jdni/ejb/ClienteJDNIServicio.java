@@ -10,6 +10,9 @@ import com.espe.distribuidas.dao.EmpleadoDAO;
 import com.espe.distribuidas.model.Cliente;
 import com.espe.distribuidas.model.Cuenta;
 import com.espe.distribuidas.model.Empleado;
+import com.espe.distribuidas.servicio.CuentaServicio;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -21,31 +24,51 @@ import javax.ejb.Stateless;
 @Stateless
 public class ClienteJDNIServicio implements ClienteJDNIServicioRemote {
 
-     @EJB
-    ClienteDAO clienteDAO;
-@EJB
-    EmpleadoDAO empleadoDAO;
+    @EJB
+    private ClienteDAO clienteDAO;
+    
+    @EJB
+    private EmpleadoDAO empleadoDAO;
+    
+    @EJB
+    private CuentaServicio cuentaServicio;
 
-     @Override
+    @Override
     public Boolean loginEmpleado(String usuario, String pass) {
         Empleado empleadotmp = new Empleado(usuario, pass);
         return empleadoDAO.find(empleadotmp).size() == 1;
 
     }
 
-
     public List<Cuenta> obterCuentasCliente(Cliente cliente) {
         Cliente clientetmp = cliente;
         return clienteDAO.find(clientetmp).get(0).getCuentaCliente();
     }
-    
-    public Cliente obtenerClienteId(Cliente cliente){
+
+    public Cliente obtenerClienteId(Cliente cliente) {
         return clienteDAO.findById(cliente.getCedula(), true);
-    
+
     }
-    
-        public List<Cliente> obtenerTodosClientes(){
+
+    public List<Cliente> obtenerTodosClientes() {
         return clienteDAO.findAll();
-    
+
     }
-   }
+
+
+    @Override
+    public String realizarDeposito(String numeroCuenta, String monto,String cedula) {
+       return this.cuentaServicio.Deposito(numeroCuenta, monto, cedula, new Date());
+    }
+
+    @Override
+    public String consultarCuentaCliente(String numeroCuenta) {
+        return cuentaServicio.obtenerCuentaClienteParte1(numeroCuenta);
+    }
+
+    @Override
+    public String realizarRetiro(String numeroCuenta, String monto, String cedula) {
+       return this.cuentaServicio.Retiro(numeroCuenta, monto, cedula, new Date());
+   
+    }
+}
