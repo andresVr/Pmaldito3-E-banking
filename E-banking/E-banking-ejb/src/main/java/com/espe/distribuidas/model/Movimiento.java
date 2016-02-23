@@ -33,7 +33,6 @@ public class Movimiento implements Serializable {
     @Column(name = "ID_MOVIMIENTO", nullable = false)
     private Integer idMovimiento;
 
-
     @Column(name = "TIPO_MOVIMIENTO", nullable = false)
     private String tipoMovimiento;
 
@@ -60,7 +59,20 @@ public class Movimiento implements Serializable {
     }
 
     public String getTipoMovimiento() {
-        return tipoMovimiento;
+        
+        switch (tipoMovimiento) {
+            case "DP":
+                return "DEPOSITO";
+            case "RP":
+                return "RETIRO";
+            case "TI":
+                return "TRANSFERENCIA ENTRADA";
+            case "TS":
+                return "TRANSFERENCIA SALIDA";
+            default:
+               return "0";
+        }
+
     }
 
     public void setTipoMovimiento(String tipoMovimiento) {
@@ -128,6 +140,5 @@ public class Movimiento implements Serializable {
     public String toString() {
         return "Movimiento{" + "idMovimiento=" + idMovimiento + ", tipoMovimiento=" + tipoMovimiento + ", fechaHora=" + fechaHora + ", monto=" + monto + ", saldo=" + saldo + ", movimientoCuenta=" + movimientoCuenta + '}';
     }
-
 
 }

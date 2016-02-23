@@ -13,12 +13,14 @@
 
 
 
-                <p:panel header="Cuentas del Cliente" style="width: 100%;"   >
+                <p:panel header="Datos Remitente" style="width: 100%;"   >
+                    <h:panelGrid columns="2" >
+                        <p:outputLabel for="valor" value="Valor de Transferencia: " />
+                        <p:inputText id="valor" value="#{transferenciaBean.valor}"></p:inputText>
+                    </h:panelGrid>
                     <h:panelGrid columns="3" >
-
-
-                        <p:dataTable id="Cuentas" var="cuentas" value="#{consultaBean.cuentas}"  scrollable="true" scrollHeight="150"  paginator="true" rows="5"
-                                     style="width: 100%;" styleClass="textlb" selectionMode="single" selection="#{consultaBean.cuenta}" rowKey="#{cuentas.numeroCuenta}" >
+                        <p:dataTable id="Cuentas" var="cuentas" value="#{transferenciaBean.cuentasCliente}"  scrollable="true" scrollHeight="150"  paginator="true" rows="5"
+                                     style="width: 100%;" styleClass="textlb" selectionMode="single" selection="#{transferenciaBean.cuentaCliente}" rowKey="#{cuentas.numeroCuenta}" >
 
                             <p:column headerText="Cuenta" filterBy="#{cuentas.numeroCuenta}" filterMatchMode="contains" >
                                 <h:outputText value="#{cuentas.numeroCuenta}"/>
@@ -27,42 +29,20 @@
                                 <h:outputText value="#{cuentas.saldo}"/>
                             </p:column>
 
-                            <p:ajax event="rowSelect" update="@form" listener="#{consultaBean.onRowSelect(event)}" />
                         </p:dataTable>
                     </h:panelGrid>
-                    </p:panel>
+                </p:panel>
 
-                    <p:panel header="Movimientos" style="width: 100%;"   > `
-
-                        <p:dataTable id="singleMovimiento" var="movimiento" value="#{consultaBean.movimientos}"  scrollable="true" paginator="true" scrollHeight="150"
-                                     style="width: 100%;" styleClass="textlb" selectionMode="single" rowKey="#{movimiento.idMovimiento}" >
-                            <p:column headerText="Codigo" >
-                                <h:outputText value="#{movimiento.idMovimiento}"/>
-                            </p:column>
-
-                            <p:column headerText="Tipo" >
-                                <h:outputText value="#{movimiento.tipoMovimiento}"/>
-                            </p:column>
-
-                            <p:column headerText="Monto" >
-                                <h:outputText value="#{movimiento.monto}"/>
-                            </p:column>
-
-                            <p:column headerText="Saldo" >
-                                <h:outputText value="#{movimiento.saldo}"/>
-                            </p:column>
-
-                            <p:column headerText="Fecha" >
-                                <h:outputText value="#{movimiento.fechaHora}">
-                                    <f:convertDateTime pattern="yyyy-MM-dd" />
-                                </h:outputText>
-
-                            </p:column>
-
-
-                        </p:dataTable>
-
-                    </p:panel>
+                <p:panel header="Datos de la Transferencia" style="width: 100%;"  > `
+                    <h:panelGrid columns="3" >
+                        <p:outputLabel for="txtCuenta" value="Cuenta: " />
+                        <p:inputText id="txtCuenta" value="#{transferenciaBean.cuentaTransferencia.numeroCuenta}"    required="true" requiredMessage="Campo Requerido" validatorMessage="Solo Números">
+                            <f:validateRegex pattern="^[0-9]+$" />
+                        </p:inputText> 
+                        <p:message for="txtCuenta"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Finalizar" update="@form" actionListener="#{transferenciaBean.ejecutarTransferencia()}"></p:commandButton>
+                </p:panel>
             </ui:define>
         </ui:composition>
     </h:body>

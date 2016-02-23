@@ -58,7 +58,7 @@ public class ClienteJDNIServicio implements ClienteJDNIServicioRemote {
 
     @Override
     public String realizarDeposito(String numeroCuenta, String monto,String cedula) {
-       return this.cuentaServicio.Deposito(numeroCuenta, monto, cedula, new Date());
+       return this.cuentaServicio.Deposito(numeroCuenta, monto, new Date());
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ClienteJDNIServicio implements ClienteJDNIServicioRemote {
 
     @Override
     public String realizarRetiro(String numeroCuenta, String monto, String cedula) {
-       return this.cuentaServicio.Retiro(numeroCuenta, monto, cedula, new Date());
+       return this.cuentaServicio.Retiro(numeroCuenta, monto, new Date());
    
     }
 }

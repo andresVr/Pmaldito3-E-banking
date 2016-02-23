@@ -7,29 +7,35 @@ package ec.edu.espe.distribuidas.web;
 
 import com.espe.distribuidas.eBanking.modelo.Telefonia;
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
+import javax.json.stream.JsonParser.Event;
 
 /**
  *
  * @author Andres Vr
  */
-
 @ViewScoped
 @ManagedBean
 public class TelefoniaBean {
+
     Telefonia telefonia;
     String respuesta;
+
     @PostConstruct
-    public void init(){
-    telefonia=new Telefonia();
+    public void init() {
+        telefonia = new Telefonia();
+        respuesta = new String();
     }
 
     public Telefonia getTelefonia() {
         return telefonia;
+
+    }
+
+    public void onChange(Event event) {
+        System.out.println(this.telefonia.getResultado());
+        this.respuesta=this.telefonia.getResultado();
     }
 
     public void setTelefonia(Telefonia telefonia) {
@@ -43,9 +49,9 @@ public class TelefoniaBean {
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
-    
-    public void ejecutar(){
-        System.out.println(this.getTelefonia().getTelefono());
+
+    public void ejecutar() {
+        System.out.println(this.telefonia.getResultado());
     }
 
 }

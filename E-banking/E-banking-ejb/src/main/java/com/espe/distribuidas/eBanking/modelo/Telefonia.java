@@ -12,7 +12,8 @@ package com.espe.distribuidas.eBanking.modelo;
 public class Telefonia {
     private String telefono;
     private String montoRecarga;
-
+    private String resultado;
+    
     public String getTelefono() {
         return telefono;
     }
@@ -27,6 +28,14 @@ public class Telefonia {
 
     public void setMontoRecarga(String montoRecarga) {
         this.montoRecarga = montoRecarga;
+    }
+
+    public String getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(String resultado) {
+        this.resultado = resultado;
     }
 
     @Override

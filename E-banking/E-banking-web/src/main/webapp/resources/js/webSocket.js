@@ -1,4 +1,4 @@
-var webSocket = new WebSocket("ws://192.168.0.101:8080/Telefonia/serversocket");
+var webSocket = new WebSocket("ws://10.16.164.138:8083/Telefonia/serversocket");
 var messagesTextArea = document.getElementById("menssagesTextArea");
 
 webSocket.onopen = function (message) {
@@ -27,9 +27,8 @@ function processClose(message) {
 }
 function processMessage(message) {
     alert("El número telefónico no existe " + message.data);
-    var alerta=message.data;
+    var alerta = message.data;
     valorq.value = alerta;
-    textTelefono.value=alerta;
 
 //                messagesTextArea.value += "Recibido del servidor..." + message.data +"\n";                
 //                if(message.data == "NO"){
@@ -46,7 +45,21 @@ function sendMessage() {
         textTelefono.value = " ";
         textValor.value = " ";
         alert(mensaje);
-       // messagesTextArea.value = "Enviado al servidor..." + mensaje + "\n";
+        // messagesTextArea.value = "Enviado al servidor..." + mensaje + "\n";
+
+
+    } else
+        webSocket.close();
+}
+function sendPrimaryMessage() {
+    
+    if (textTelefono.value != "close") {
+        var mensaje = textTelefono.value;
+        webSocket.send(mensaje);
+        textTelefono.value = " ";
+        textValor.value = " ";
+        alert(mensaje);
+        // messagesTextArea.value = "Enviado al servidor..." + mensaje + "\n";
 
 
     } else

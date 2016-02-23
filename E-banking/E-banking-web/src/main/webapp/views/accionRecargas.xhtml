@@ -9,22 +9,24 @@
     <h:body>
         <ui:composition template="/plantillas/templateSocket.xhtml">
             <ui:define name="lista">
-
-                <label>Telefono</label>
-                <p:inputText id="textTelefono" value="#{telefoniaBean.telefonia.telefono}"></p:inputText>
-                <label>Valor</label>
-                <p:inputText id="textValor"></p:inputText>
-                <p:inputText id="valorq" value="#{telefoniaBean.respuesta}"></p:inputText>
-                <!--<h:commandButton id="valor"  action="valor" type="submit" onclick="sendMessage()" /> -->
-                <p:commandButton id="valor"   actionListener="#{telefoniaBean.ejecutar()}" ajax="false" type="submit" onclick="sendMessage()" ></p:commandButton>
-                <!--<input type="button" onclick="sendMessage();"  value="Recargar"></input>-->
+                <p:panel header="CONSOLIDADO CUENTAS DEL USUARIO">
+                    <label>Telefono</label>
+                    <p:inputText id="textTelefono" value="#{telefoniaBean.telefonia.telefono}"></p:inputText>
+                    <label>Valor</label>
+                    <p:inputText id="textValor"></p:inputText>
+                   <!-- <input type="button" onclick="sendMessage();"  value="Recargar"></input>-->
+                   <p:commandButton id="boton" value="ingresar" update="@this" onclick="sendMessage();" actionListener="#{telefoniaBean.ejecutar()}"></p:commandButton>
 
 
-                <p:inputTextarea  id="menssagesTextArea">
-
-                </p:inputTextarea>
-                <br/>
-                <textarea id="menssagesTextArea" rows="10" cols="50"> </textarea>
+                </p:panel>
+                <p:panel header="variable" id="panel1">
+                    <p:inputText id="valorq" value="#{telefoniaBean.telefonia.resultado}" >
+                        <p:ajax event="change" process="@this" update="value" listener="#{telefoniaBean.ejecutar()}" ></p:ajax>
+                    </p:inputText>
+                    <p:inputText id="value" value="#{telefoniaBean.respuesta}" > </p:inputText>
+                                    
+                    
+                </p:panel>
             </ui:define>
         </ui:composition>
     </h:body>
