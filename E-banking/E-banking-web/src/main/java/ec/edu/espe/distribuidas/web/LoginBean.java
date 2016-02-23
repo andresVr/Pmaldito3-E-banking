@@ -69,7 +69,7 @@ public class LoginBean implements Serializable {
             if (usuariotmp != null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Bienvenido"));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
-                redireccion = "/views/dashboard?faces-redirect=true";
+                redireccion = "/views/actionConsolidado?faces-redirect=true";
                 sesion.setIdCliente(usuariotmp.getCodigoCliente());
                 sesion.setFechaSesion(new Date());
                 this.sesionServicio.insertar(sesion);

@@ -6,6 +6,7 @@
 package com.espe.distribuidas.eBanking.modelo;
 
 import com.espe.distribuidas.eBanking.persistence.BaseEntity;
+import java.io.Serializable;
 import java.util.Date;
 import org.mongodb.morphia.annotations.Entity;
 
@@ -14,7 +15,7 @@ import org.mongodb.morphia.annotations.Entity;
  * @author Andres Vr
  */
 @Entity(value = "sesion")
-public class Sesion extends BaseEntity{
+public class Sesion extends BaseEntity implements Serializable{
 
     public String idCliente;
     public Date fechaSesion;

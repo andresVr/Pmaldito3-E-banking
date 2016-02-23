@@ -17,7 +17,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.ws.rs.client.Client;
 
 /**
  *
@@ -28,16 +27,20 @@ import javax.ws.rs.client.Client;
 public class CuentaServicio {
 
     @EJB
-    CuentaDAO cuentaDAO;
+    private CuentaDAO cuentaDAO;
 
     @EJB
-    ClienteDAO clienteDAO;
+    private ClienteDAO clienteDAO;
 
     @EJB
-    MovimientoDAO movimientoDAO;
+    private MovimientoDAO movimientoDAO;
 
     @EJB
-    MovimientoServicio movimientoServicio;
+    private MovimientoServicio movimientoServicio;
+    
+    
+
+    private BigDecimal total = new BigDecimal(0);
 
     public String obtenerCuentaClienteParte1(String cuenta) {
         Cuenta cuentatmp = new Cuenta(cuenta);
@@ -55,6 +58,10 @@ public class CuentaServicio {
         return cuentaDAO.find(cuentarmp).get(0);
     }
 
+    public List<Cuenta> obtenercuentas(){
+    return this.cuentaDAO.findAll();
+    
+    }
     public BigDecimal calcularNuevoSaldo(Integer tipo, BigDecimal saldo, BigDecimal transaccion) {
         BigDecimal valor = null;
         if (tipo == 0) {
@@ -75,12 +82,23 @@ public class CuentaServicio {
             movimientotmp.setMovimientoCuenta(cuentatmp);
             movimientotmp.setSaldo(calcularNuevoSaldo(0, cuentatmp.getSaldo(), new BigDecimal(valorDeposito)));
             movimientotmp.setTipoMovimiento("DP");
+            this.actualizarSaldo(numeroCuenta, movimientotmp.getSaldo());
             this.movimientoServicio.insertarMovimiento(movimientotmp);
             return "00" + "_" + calcularNuevoSaldo(0, cuentatmp.getSaldo(), new BigDecimal(valorDeposito));
         } else {
             return "01";
 
         }
+    }
+
+    public BigDecimal totalConsolidado(List<Cuenta> consolidado) {
+        System.out.println("size" + consolidado.size());
+        for (int i = 0; i < consolidado.size(); i++) {
+            this.total = this.total.add(consolidado.get(i).getSaldo());
+
+        }
+
+        return this.total;
     }
 
     public String Retiro(String numeroCuenta, String valorRetiro, String cedula, Date fecha) {
@@ -95,12 +113,20 @@ public class CuentaServicio {
             movimientotmp.setSaldo(calcularNuevoSaldo(1, cuentatmp.getSaldo(), new BigDecimal(valorRetiro)));
             movimientotmp.setTipoMovimiento("RP");
             this.movimientoServicio.insertarMovimiento(movimientotmp);
+            this.actualizarSaldo(numeroCuenta, movimientotmp.getSaldo());
             return "00" + "_" + calcularNuevoSaldo(0, cuentatmp.getSaldo(), new BigDecimal(valorRetiro));
         } else {
             return "01";
 
         }
 
+    }
+
+    public void actualizarSaldo(String numeroCuenta, BigDecimal saldo) {
+        Cuenta cuenta = new Cuenta(numeroCuenta);
+        Cuenta cuentatmp = this.cuentaDAO.find(cuenta).get(0);
+        cuentatmp.setSaldo(saldo);
+        this.cuentaDAO.update(cuentatmp);
     }
     //e-banking
 
@@ -142,11 +168,40 @@ public class CuentaServicio {
     public List<Cuenta> obtenerConsolidado(String codigoCliente) {
         Cliente clientetmp = new Cliente();
         clientetmp.setCedula(codigoCliente);
-        Cuenta cuentatmp = new Cuenta();
-        return this.cuentaDAO.find(cuentatmp);
+        Cliente cliente = this.clienteDAO.find(clientetmp).get(0);
+        return cliente.getCuentaCliente();
     }
 
     public Cuenta obtenerCuentaId(String idCuenta) {
-        return this.cuentaDAO.findById(idCuenta, true);
+        Cuenta cuenta = new Cuenta();
+        cuenta.setNumeroCuenta(idCuenta);
+        return this.cuentaDAO.find(cuenta).get(0);
     }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public String Transferencia(String numeroCuenta, String valorDeposito, String cedula, Date fecha) {
+
+        Cuenta cuentatmp = obtenerCuentaClienteParte2(numeroCuenta);
+        if (cuentatmp != null) {
+            Movimiento movimientotmp = new Movimiento();
+            movimientotmp.setFechaHora(fecha);
+            movimientotmp.setMonto(new BigDecimal(valorDeposito));
+            movimientotmp.setMovimientoCuenta(cuentatmp);
+            movimientotmp.setSaldo(calcularNuevoSaldo(0, cuentatmp.getSaldo(), new BigDecimal(valorDeposito)));
+            movimientotmp.setTipoMovimiento("TR");
+            this.movimientoServicio.insertarMovimiento(movimientotmp);
+            this.actualizarSaldo(numeroCuenta, movimientotmp.getSaldo());
+            return "SI";
+        }
+        else
+            return "NO";
+    }
+
 }

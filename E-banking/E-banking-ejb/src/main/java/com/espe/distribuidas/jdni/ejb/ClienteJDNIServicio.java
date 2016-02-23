@@ -63,7 +63,10 @@ public class ClienteJDNIServicio implements ClienteJDNIServicioRemote {
 
     @Override
     public String consultarCuentaCliente(String numeroCuenta) {
+        if(this.cuentaServicio.obtenerCuentaId(numeroCuenta)!=null)
         return cuentaServicio.obtenerCuentaClienteParte1(numeroCuenta);
+        else
+            return "No";
     }
 
     @Override

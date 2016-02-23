@@ -195,7 +195,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
         }
     
 public String generarClave(){
-    return new Random(999999).toString();
+    return String.valueOf(new Random(999999).nextLong());
 }
     
     /**

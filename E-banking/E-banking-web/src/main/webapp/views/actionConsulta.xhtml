@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:body>
+        <ui:composition template="/plantillas/template2.xhtml">
+            <ui:define name="lista">
+                <p:outputLabel><h1>Consultas</h1></p:outputLabel>
+
+
+
+                <p:panel header="Cuentas del Cliente" style="width: 100%;"   >
+                    <h:panelGrid columns="3" >
+
+
+                        <p:dataTable id="Cuentas" var="cuentas" value="#{consultaBean.cuentas}"  scrollable="true" scrollHeight="150"  paginator="true" rows="5"
+                                     style="width: 100%;" styleClass="textlb" selectionMode="single" selection="#{consultaBean.cuenta}" rowKey="#{cuentas.numeroCuenta}" >
+
+                            <p:column headerText="Cuenta" filterBy="#{cuentas.numeroCuenta}" filterMatchMode="contains" >
+                                <h:outputText value="#{cuentas.numeroCuenta}"/>
+                            </p:column>
+                            <p:column headerText="Saldo" >
+                                <h:outputText value="#{cuentas.saldo}"/>
+                            </p:column>
+
+                            <p:ajax event="rowSelect" update="@form" listener="#{consultaBean.onRowSelect(event)}" />
+                        </p:dataTable>
+                    </h:panelGrid>
+                    </p:panel>
+
+                    <p:panel header="Movimientos" style="width: 100%;"   > `
+
+                        <p:dataTable id="singleMovimiento" var="movimiento" value="#{consultaBean.movimientos}"  scrollable="true" paginator="true" scrollHeight="150"
+                                     style="width: 100%;" styleClass="textlb" selectionMode="single" rowKey="#{movimiento.idMovimiento}" >
+                            <p:column headerText="Codigo" >
+                                <h:outputText value="#{movimiento.idMovimiento}"/>
+                            </p:column>
+
+                            <p:column headerText="Tipo" >
+                                <h:outputText value="#{movimiento.tipoMovimiento}"/>
+                            </p:column>
+
+                            <p:column headerText="Monto" >
+                                <h:outputText value="#{movimiento.monto}"/>
+                            </p:column>
+
+                            <p:column headerText="Saldo" >
+                                <h:outputText value="#{movimiento.saldo}"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha" >
+                                <h:outputText value="#{movimiento.fechaHora}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                                </h:outputText>
+
+                            </p:column>
+
+
+                        </p:dataTable>
+
+                    </p:panel>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

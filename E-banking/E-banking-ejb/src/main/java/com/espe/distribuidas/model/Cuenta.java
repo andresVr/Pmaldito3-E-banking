@@ -66,7 +66,10 @@ public class Cuenta implements Serializable {
     }
 
     public String getTipo() {
-        return tipo;
+        if(tipo.equals("AH"))
+        return "AHORROS";
+        else
+        return "CORRIENTE";
     }
 
     public void setTipo(String tipo) {

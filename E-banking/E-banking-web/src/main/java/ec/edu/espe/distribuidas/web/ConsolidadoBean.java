@@ -8,24 +8,16 @@ package ec.edu.espe.distribuidas.web;
 import com.espe.distribuidas.eBanking.modelo.Sesion;
 import com.espe.distribuidas.eBanking.servicio.SesionServicio;
 import com.espe.distribuidas.model.Cliente;
+import com.espe.distribuidas.model.Cuenta;
 import com.espe.distribuidas.servicio.ClienteServicio;
 import com.espe.distribuidas.servicio.CuentaServicio;
-import java.io.IOException;
-import static java.lang.System.out;
-import javax.jms.Connection;
-import java.sql.SQLException;
-import java.util.Queue;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.QueueConnectionFactory;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.jms.Session;
 
 /**
  *
@@ -33,7 +25,7 @@ import javax.jms.Session;
  */
 @ViewScoped
 @ManagedBean
-public class ConsolidadoBean {
+public class ConsolidadoBean implements Serializable{
 
     @EJB
     private CuentaServicio cuentaServicio;
@@ -44,15 +36,25 @@ public class ConsolidadoBean {
     @EJB
     private SesionServicio sesionServicio;
 
+    private List<Sesion>sesiones;
+    
     private Cliente clienteInicio;
+    
+    private List<Cuenta> cuentas;
+    
+    private Cuenta totalSaldo;
     
     @PostConstruct
     public void init() {
         Sesion sesionTmp = sesionServicio.obtenerSesion();
         this.clienteInicio = clienteServicio.obtenerclientePorId(sesionTmp.getIdCliente());
-        
+       this.cuentas=this.cuentaServicio.obtenerConsolidado(sesionTmp.idCliente);
+       totalSaldo=new Cuenta();
+       totalSaldo.setSaldo(this.cuentaServicio.totalConsolidado(this.cuentas));
 
     }
+    
+
 
     public Cliente getClienteInicio() {
         return clienteInicio;
@@ -60,6 +62,30 @@ public class ConsolidadoBean {
 
     public void setClienteInicio(Cliente clienteInicio) {
         this.clienteInicio = clienteInicio;
+    }
+
+    public List<Sesion> getSesiones() {
+        return sesiones;
+    }
+
+    public void setSesiones(List<Sesion> sesiones) {
+        this.sesiones = sesiones;
+    }
+
+    public List<Cuenta> getCuentas() {
+        return cuentas;
+    }
+
+    public void setCuentas(List<Cuenta> cuentas) {
+        this.cuentas = cuentas;
+    }
+
+    public Cuenta getTotalSaldo() {
+        return totalSaldo;
+    }
+
+    public void setTotalSaldo(Cuenta totalSaldo) {
+        this.totalSaldo = totalSaldo;
     }
 
 

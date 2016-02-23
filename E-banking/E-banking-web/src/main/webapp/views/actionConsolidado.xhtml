@@ -9,7 +9,31 @@
     <h:body>
         <ui:composition template="/plantillas/templateSocket.xhtml">
             <ui:define name="lista">
-    
+                <p:outputLabel id="usuario" value="Conectado como: #{consolidadoBean.clienteInicio.nombre} #{consolidadoBean.clienteInicio.apellido}"></p:outputLabel>
+                <p:panel header="CONSOLIDADO CUENTAS DEL USUARIO">
+                    <p:dataTable id="singleConsolidado" var="consolidado" value="#{consolidadoBean.cuentas}"  scrollable="true" paginator="true" scrollHeight="150"
+                                 style="width: 100%;" styleClass="textlb"  >
+
+                        <p:column headerText="Numero de cuenta">
+                            <h:outputText value="#{consolidado.numeroCuenta}" />
+                        </p:column>
+
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{consolidado.tipo}" />
+                        </p:column>
+
+                        <p:column headerText="Saldo">
+                            <h:outputText value="#{consolidado.saldo}" />
+                        </p:column>
+
+
+                    </p:dataTable>
+
+                    <p:panelGrid columns="2">
+                        <p:outputLabel id="total" value="Total"></p:outputLabel>
+                        <p:outputLabel id="valorTotal" value="  #{consolidadoBean.totalSaldo.saldo}"></p:outputLabel>
+                    </p:panelGrid>
+                </p:panel>
             </ui:define>
         </ui:composition>
     </h:body>

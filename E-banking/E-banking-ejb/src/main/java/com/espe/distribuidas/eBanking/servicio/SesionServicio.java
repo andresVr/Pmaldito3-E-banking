@@ -26,6 +26,10 @@ public class SesionServicio {
     }
     public Sesion obtenerSesion(){
     List<Sesion> sesiones=this.sesionDAO.find().asList();
-    return sesiones.get(sesiones.size());
+    return sesiones.get(sesiones.size()-1);
+    }
+    
+    public List<Sesion> sesiones(){
+    return this.sesionDAO.find().asList();
     }
 }

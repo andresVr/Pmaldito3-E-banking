@@ -6,6 +6,7 @@
 package com.espe.distribuidas.eBanking.modelo;
 
 import com.espe.distribuidas.eBanking.persistence.BaseEntity;
+import java.io.Serializable;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.mongodb.morphia.annotations.Entity;
 
@@ -14,7 +15,7 @@ import org.mongodb.morphia.annotations.Entity;
  * @author david
  */
 @Entity(value = "usuario")
-public class Usuario extends BaseEntity {
+public class Usuario extends BaseEntity implements Serializable {
 
     private double montoMaximo;
     private String codigoCliente;

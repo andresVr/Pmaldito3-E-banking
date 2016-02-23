@@ -25,7 +25,9 @@ public class ClienteServicio {
     ClienteDAO clienteDAO;
     
     public Cliente obtenerclientePorId(String idCliente){
-    return clienteDAO.findById(idCliente, true);
+        Cliente clientetmp=new Cliente();
+        clientetmp.setCedula(idCliente);
+    return clienteDAO.find(clientetmp).get(0);
     }
 
 }
